@@ -60,25 +60,25 @@ int raceTour(int racerNum,int areaSize,char areaMtr[10][100],int waitingTime,cha
 	do{
 	counter=0;		
  						     			   		  
-	for(i=0;i<racerNum;i++){
+	for(i=0;i<racerNum;i++){		
 		tmp=0;
 		find=0;
 		do{
-			if(siralama[tmp]=='A'+i){
-				find=1;}
+			if(siralama[tmp]=='A'+i){		// Yarışcının yarışı bitirip bitirmedigi kontrolu
+				find=1;}			
 			else{
 			tmp=tmp+1;}	
-		}while(find!=0 || tmp!=racerNum);
-		printf("%d------\n",tmp);
-		printf("%d---------\n",find);
+		}while(find!=0 || tmp!=racerNum);		// find daha önceden yarısı bitirmis mi onu tutan degisken
+		printf("tmp=%d------\n",tmp);			// tmp ise yarışcı yarışı bitirmediyse for döngüsüne girmemizi saglayan 								//degisken
+		printf("find=%d---------\n",find);
 		if(tmp=racerNum){		
 			areaMtr[i][lastSit[i]]='_';
 			int speed=1+rand()%5;				     
-			int move=lastSit[i]+speed;				      
+			int move=lastSit[i]+speed;		//yarış esnasında ilerlemeleri kaydeden bölüm 		      
 			areaMtr[i][move]='A'+i;		
 			lastSit[i]=move;				
-		if (lastSit[i]>=areaSize){		
-			areaMtr[i][areaSize-1]='A'+i;	
+		if (lastSit[i]>=areaSize){			//yarış bitti ise bitiren yarışcıyı kaydettigimiz bölüm
+			areaMtr[i][areaSize-1]='A'+i;			
 			siralama[sira]='A'+i;
 			sira=sira+1;
 			}				
