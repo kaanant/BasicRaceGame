@@ -3,20 +3,21 @@
 #include <stdlib.h>
 
 
-int passArea(char areaMtr[10][100],int racerNum,int areaSize);
-int raceTour(int racerNum,int areaSize,char areaMtr[10][100],int waitingTime);
+int passArea(char areaMtr[10][100],int racerNum,int areaSize,char siralama[]);
+int raceTour(int racerNum,int areaSize,char areaMtr[10][100],int waitingTime,char siralama[]);
 
 
 int main(){
 	
-	int racerNum=5;			//racerNum yarışcı sayısını tutan degisken mainde 5 olarak atandı ancak kullanıcı degistirebilir.
-	int areaSize=50;		//areaSize parkur büyüklüğü koşulacak toplam mesafe 50 olarak atandı ancak kullanıcı 
-	char areaMtr[10][100];		//areaMtr print edilecek parkur
+	int racerNum=5;			
+	int areaSize=50;		
+	char areaMtr[10][100];		
 	int waitingTime=1;
 	int menuCont=5,i,j;
+	char siralama[]={' ',' ',' ',' ',' ',' ',' ',' '};
 	srand(time(NULL));
 	for(i=0;i<10;i++){
-		for(j=0;j<100;j++){		// önce tüm matrisi '_' olarak atayıp üzerinde gerekli oynamaları fonk icerisinde yapılacak
+		for(j=0;j<100;j++){		
 			areaMtr[i][j]='_';
 		}
 	}
@@ -45,41 +46,56 @@ int main(){
 	for(i=0;i<racerNum;i++){
 		areaMtr[i][0]='A'+i;	
 	}
-	raceTour(racerNum,areaSize,areaMtr,waitingTime);	//fonkisyona tüm bilgiler eklenir
+	raceTour(racerNum,areaSize,areaMtr,waitingTime,siralama);	
 
 
 return 0;
 }
-int raceTour(int racerNum,int areaSize,char areaMtr[10][100],int waitingTime){
+int raceTour(int racerNum,int areaSize,char areaMtr[10][100],int waitingTime,char siralama[]){
 	int i,j,counter;
 	int lastSit[]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-	
+	int sira=0;
+	int tmp=0;
+	int find=0;	
 	do{
-	counter=0;		//counter degiskeni  ile fonksiyonun ne kadar devam edecegi kontrol edilir
-
-	passArea(areaMtr,racerNum,areaSize);	// passArea fonksiyonu ekrana bilgileri bastırma fonksiyonudur 						     			   		    
-	
-	for(i=0;i<racerNum;i++){			// bu for icerisinde her turda yarışcılar hareket ettirilir.
-		areaMtr[i][lastSit[i]]='_';
-		int speed=1+rand()%5;				     
-		int move=lastSit[i]+speed;	//speed degiskeni her turda ilerlemeyi rastgele olarak belirler			      
-		areaMtr[i][move]='A'+i;		// Matris char oldugunu icin yarışcılar 'A,B,C..' olarak atanır
-		lastSit[i]=move;		// son kalınan yerin kaybolmaması için son kordinatlar kaydedilir		
-		if (lastSit[i]>=areaSize){	// lastSit dizisinde
-			areaMtr[i][areaSize-1]='A'+i;	// eger herhangi bir yarışcı parkuru tamamlamış ise kontrol
-			}				// edilir ver parkurun son elemanı yarışcı olarak atanır.
+	counter=0;		
+ 						     			   		  
+	for(i=0;i<racerNum;i++){
+		tmp=0;
+		find=0;
+		do{
+			if(siralama[tmp]=='A'+i){
+				find=1;}
+			else{
+			tmp=tmp+1;}	
+		}while(find!=0 || tmp!=racerNum);
+		printf("%d------\n",tmp);
+		printf("%d---------\n",find);
+		if(tmp=racerNum){		
+			areaMtr[i][lastSit[i]]='_';
+			int speed=1+rand()%5;				     
+			int move=lastSit[i]+speed;				      
+			areaMtr[i][move]='A'+i;		
+			lastSit[i]=move;				
+		if (lastSit[i]>=areaSize){		
+			areaMtr[i][areaSize-1]='A'+i;	
+			siralama[sira]='A'+i;
+			sira=sira+1;
+			}				
+		}
+			
 	}
 	for(j=0;j<racerNum;j++){
 		if(lastSit[j]>areaSize)
-			counter=counter+1;	// do..while kontrolü yapmak icin tüm yarışcıların parkuru bitirip 	
-	}					// bitirmedigi kontrol edilir
-	printf("\n\ncounter:%d\n\n",counter);
+			counter=counter+1;	 	
+	}
+	passArea(areaMtr,racerNum,areaSize,siralama);					
 	
 	}while(counter!=racerNum);
 
 }
 
-int passArea(char areaMtr[10][100],int racerNum,int areaSize){
+int passArea(char areaMtr[10][100],int racerNum,int areaSize,char siralama[]){
 	int i,j;
 
 	for(i=0;i<racerNum;i++){
@@ -87,6 +103,9 @@ int passArea(char areaMtr[10][100],int racerNum,int areaSize){
 			printf("%c",areaMtr[i][j]);
 		}
 		printf("\n");
+	}
+	for(i=0;i<racerNum;i++){
+		printf("\n%d .= %c\n",i+1,siralama[i]);
 	}
 	
 }
