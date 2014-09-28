@@ -1,31 +1,46 @@
+/*
+KAAN ANT
+13011038
+PROGRAMMİNG LANGUAGE ASSİNGMENT 1
+LİNUX x64
+BU PROGRAM BİR YARIŞ PROGRAMI OLUP KULLANICIDAN ALINAN VERİLERE GÖRE BİR PARKURDA YARIŞ YAPILMASINI SAĞLAR
+
+*/
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-
+// passArea Output fonksiyonu olup yarış durumunu ekrana bastırır
 int passArea(char areaMtr[10][100],int racerNum,int areaSize,char siralama[]);
+// raceTour işlemlerin yapıldığı yarışçıların her tur ilerletildigi fonksiyondur.
 int raceTour(int racerNum,int areaSize,char areaMtr[10][100],int waitingTime,char siralama[]);
 
 
 int main(){
-	
-	int racerNum=5;			
-	int areaSize=50;		
-	char areaMtr[10][100];		
+	// racerNum yarışcı sayısını tutar 5 olarak atanmış ancak kullanıcı tarafından degistirilebilir
+	int racerNum=5;
+	// areaSize parkur boyutunu tutar 50 olarak atanmış ancak kullanıcı tarafından degistirilebilir			
+	int areaSize=50;
+	// areaMtr verileri tutmak ve ekrana bastırmada kolaylık saglamak için kullanılan matris		
+	char areaMtr[10][100];
+	// waitingTime kullanıcının bir sonraki adıma geçmek için belirleyecegi bekleme süresi		
 	int waitingTime=1;
+	// menuCont ekrana bastırılan menuyu kontrol etmek için kullanılan degisken
 	int menuCont=5,i,j;
+	// siralama dizisi yarış sonuclarının tutulacagı dizi
 	char siralama[]={' ',' ',' ',' ',' ',' ',' ',' '};
 	srand(time(NULL));
 	for(i=0;i<10;i++){
 		for(j=0;j<100;j++){		
-			areaMtr[i][j]='_';
-		}
+			areaMtr[i][j]='_';	// parkuru oluşturmak için önce areaMtr matrisinin tüm elemanları '_' olarak atanır 
+		}				
 	}
 	do{
 	printf("----MENU----\n");
 	printf("0-Yarisi Baslatmak icin basiniz\n");
 	printf("1-Yarisci sayisini girmek icin basiniz\n");
-	printf("2-Parkur uzunlugunu girmek icin basiniz\n");
+	printf("2-Parkur uzunlugunu girmek icin basiniz\n");	//Menu oluşturulur.
 	printf("3-Bekleme süresini girmek icin basiniz\n\n");
 	scanf("%d",&menuCont);
 	if (menuCont==1){
@@ -41,10 +56,10 @@ int main(){
 		scanf("%d",&waitingTime);
 	}
 	else{}
-	}while(menuCont!=0);
+	}while(menuCont!=0);			// Kullanıcı istedigi verileri degistirebilir 0 komutu ile yarış baslatılır
 	
 	for(i=0;i<racerNum;i++){
-		areaMtr[i][0]='A'+i;	
+		areaMtr[i][0]='A'+i;		// areaMtr matrisinin her satırının ilk elemanı yarışcı adı olarak atanır.
 	}
 	raceTour(racerNum,areaSize,areaMtr,waitingTime,siralama);	
 
@@ -53,40 +68,42 @@ return 0;
 }
 int raceTour(int racerNum,int areaSize,char areaMtr[10][100],int waitingTime,char siralama[]){
 	int i,j,counter;
+	// lastSit dizisi yarışmacıların bir önceki turda nerede bulundugunu kaydeder
 	int lastSit[]={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	int sira=0;
 	int tmp=0;
 	int find=0;	
-	do{		
+	do{
+	
  						     			   		  
-	for(i=0;i<racerNum;i++){
+	for(i=0;i<racerNum;i++){		// bu for döngüsü ile her turda tüm yarışmacıların ilerlemesi saglanır
 		tmp=0;
 		find=0;		
 		do{
-			if(siralama[tmp]=='A'+i)
+			if(siralama[tmp]=='A'+i)	// if ile bu yarışmacı daha önceden yarışı 1. olarak bitirmiş mi diye kontrol 								//edilir
 				find=1;
 			else
-				tmp=tmp+1;		
-		}while(find==0 && tmp!=racerNum);
-		//printf("find=%d\ntmp=%d\n",find,tmp);
+				tmp=tmp+1;		// bitirmiş ise find degiskeni 1 atanarak while döngüsünden cıkılır
+		}while(find==0 && tmp!=racerNum);	// bitirmemiş ise tmp arttırılarak diger sıralamalarda bitirmiş mi diye bakılır 
 		
-		if(tmp==racerNum){		
+		if(tmp==racerNum){			// Yarışmacının while döngüsünden tmp degiskeni ile çıkmışsa yarışmacı ilerletilir
 			areaMtr[i][lastSit[i]]='_';
-			int speed=1+rand()%5;				     
-			int move=lastSit[i]+speed;			      
-			areaMtr[i][move]='A'+i;		
+			int speed=1+rand()%5;		// speed degiskeni random atanarak yarışmacının ne 								// kadar ilerleyecegi belirlenir				     
+			int move=lastSit[i]+speed;	// lastSit dizisine speed degiskeni eklenerek yarışmacının yeni konumu bulunur 		      
+			areaMtr[i][move]='A'+i;			
 			lastSit[i]=move;				
-		if (lastSit[i]>=areaSize){			
-			areaMtr[i][areaSize-1]='A'+i;
+		if (lastSit[i]>=areaSize){	 	// Bu if yarışmacının bu turda yarışı bitirip bitirmedigini kontrol eder	
+			areaMtr[i][areaSize-1]='A'+i;	
 			siralama[sira]='A'+i;
 			sira=sira+1;			
 			}				
 		}
 			
 	}
-	passArea(areaMtr,racerNum,areaSize,siralama);					
+	passArea(areaMtr,racerNum,areaSize,siralama);
+	usleep(waitingTime*100000);					
 	
-	}while(sira<racerNum);
+	}while(sira<racerNum);				//eger tum yarışmacılar yarışı bitirdi ise while dongusunden cıkılarak program 								//sonlanır
 
 }
 
