@@ -1,7 +1,7 @@
 /*
 KAAN ANT
 13011038
-PROGRAMMİNG LANGUAGE ASSİNGMENT 1
+PROGRAMMİNG LANGUAGE ASSİNGMENT 1				NOT: UNİSTD.H LİNUX İCİN BİR KUTUPHANE OLUP SLEEP FONKSİYONU WİNDOWS 									İSLETİM SİSTEMLERİNDE HATA VEREBİLİR.
 LİNUX x64
 BU PROGRAM BİR YARIŞ PROGRAMI OLUP KULLANICIDAN ALINAN VERİLERE GÖRE BİR PARKURDA YARIŞ YAPILMASINI SAĞLAR
 
@@ -101,10 +101,11 @@ int raceTour(int racerNum,int areaSize,char areaMtr[10][100],int waitingTime,cha
 			
 	}
 	passArea(areaMtr,racerNum,areaSize,siralama);
-	usleep(waitingTime*100000);					
+	sleep(waitingTime);
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");	//CLEAR KOMUTU FARKLI İSLETİM SİSTEMLERİNDE SORUN 									//SORUN YARATABİLDİGİ İCİN /n 'ler kullanarak terminali temizlemeye 									///çalıştım				
 	
 	}while(sira<racerNum);				//eger tum yarışmacılar yarışı bitirdi ise while dongusunden cıkılarak program 								//sonlanır
-
+passArea(areaMtr,racerNum,areaSize,siralama);
 }
 
 int passArea(char areaMtr[10][100],int racerNum,int areaSize,char siralama[]){

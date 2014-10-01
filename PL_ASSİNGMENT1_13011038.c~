@@ -101,10 +101,11 @@ int raceTour(int racerNum,int areaSize,char areaMtr[10][100],int waitingTime,cha
 			
 	}
 	passArea(areaMtr,racerNum,areaSize,siralama);
-	usleep(waitingTime*100000);					
+	sleep(waitingTime);
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");					
 	
 	}while(sira<racerNum);				//eger tum yarışmacılar yarışı bitirdi ise while dongusunden cıkılarak program 								//sonlanır
-
+passArea(areaMtr,racerNum,areaSize,siralama);
 }
 
 int passArea(char areaMtr[10][100],int racerNum,int areaSize,char siralama[]){
